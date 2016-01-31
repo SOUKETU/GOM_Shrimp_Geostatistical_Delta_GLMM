@@ -178,27 +178,3 @@ Plot_range_quantiles( Data_Extrap=Extrapolation_List[["Data_Extrap"]], Report=Re
 Plot_range_shifts(Sdreport, Report, TmbData, Year_Set=NULL, FileName_COG=paste0(DateFile,"/center_of_gravity.png"), FileName_Area=paste0(DateFile,"/Area.png"), Znames=rep("",ncol(Report$mean_Z_tm)),use_biascorr=FALSE)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
