@@ -11,7 +11,7 @@ function(MappingDetails, Report, Nknots=Inf, PlotDF, MapSizeRatio, Xlim, Ylim, F
   on.exit( detach(Report) )
   plot_codes <- c("Pres", "Pos", "Dens", "Pos_Rescaled", "Dens_Rescaled", "Eps_Pres", "Eps_Pos")
   if( is.null(textmargin)){
-    textmargin <- c("", "", "Density, ln(kg. per square km.)", "", "", "", "")
+    textmargin <- c("", "", "Density, ln(thousands. per square km.)", "", "", "", "")
   }
 
   # Select locations to plot

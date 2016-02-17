@@ -1,5 +1,5 @@
 PlotIndex_Fn <-
-function( PlotName="Index.png", DirName, TmbData, Sdreport, Year_Set=NULL, Years2Include=NULL, interval_width=1, strata_names=NULL, use_biascorr=FALSE, plot_legend=TRUE, total_area_km2=NULL, plot_log=FALSE, ... ){
+function( PlotName="Index.png", DirName, TmbData, Sdreport, Year_Set=NULL, Years2Include=NULL, interval_width=1, strata_names=NULL, use_biascorr=TRUE, plot_legend=TRUE, total_area_km2=NULL, plot_log=FALSE, ... ){
   # Fill in missing
   if( is.null(Year_Set) ) Year_Set = 1:TmbData$n_t
   if( is.null(Years2Include) ) Years2Include = 1:TmbData$n_t

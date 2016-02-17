@@ -18,12 +18,12 @@ covariate=1
 Data_Set = c("GOM_shrimp")
 Sim_Settings = list("Species_Set"=1:100, "Nyears"=10, "Nsamp_per_year"=600, "Depth_km"=-1, "Depth_km2"=-1, "Dist_sqrtkm"=0, "SigmaO1"=0.5, "SigmaO2"=0.5, "SigmaE1"=0.5, "SigmaE2"=0.5, "SigmaVY1"=0.05, "Sigma_VY2"=0.05, "Range1"=1000, "Range2"=500, "SigmaM"=1)
 Version = "geo_index_v3l"
-n_x = c(100, 250, 500, 1000, 2000)[1] # Number of stations
-FieldConfig = c("Omega1"=1, "Epsilon1"=1, "Omega2"=1, "Epsilon2"=1) # 1=Presence-absence; 2=Density given presence
+n_x = c(100, 250, 500, 1000, 2000)[2] # Number of stations
+FieldConfig = c("Omega1"=0, "Epsilon1"=0, "Omega2"=1, "Epsilon2"=1) # 1=Presence-absence; 2=Density given presence
 CovConfig = c("SST"=0, "RandomNoise"=0) # DON'T USE DURING REAL-WORLD DATA FOR ALL SPECIES (IT IS UNSTABLE FOR SOME)
 Q_Config = c("Pass"=0)
 VesselConfig = c("Vessel"=0, "VesselYear"=0)
-ObsModel = 2  # 0=normal (log-link); 1=lognormal; 2=gamma; 4=ZANB; 5=ZINB; 11=lognormal-mixture; 12=gamma-mixture
+ObsModel = 5  # 0=normal (log-link); 1=lognormal; 2=gamma; 4=ZANB; 5=ZINB; 11=lognormal-mixture; 12=gamma-mixture
 Kmeans_Config = list( "randomseed"=1, "nstart"=100, "iter.max"=1e3 )     # Samples: Do K-means on trawl locs; Domain: Do K-means on extrapolation grid
 
 # Determine region
@@ -55,7 +55,8 @@ setwd('/Users/jiecao/Desktop/Google Drive/work/Postdoc research/GOM_shrimp_spati
 
 # Read in shrimp summer survey data
 load("West_GOM_Shrimp_survey.rda")
-shrimp_catch <- shrimp_data_new$B0 + shrimp_data_new$B1 + shrimp_data_new$B2 + shrimp_data_new$B3 + shrimp_data_new$B4 + shrimp_data_new$B5 + shrimp_data_new$B6 +shrimp_data_new$B7
+#shrimp_catch <- shrimp_data_new$B0 + shrimp_data_new$B1 + shrimp_data_new$B2 + shrimp_data_new$B3 + shrimp_data_new$B4 + shrimp_data_new$B5 + shrimp_data_new$B6 +shrimp_data_new$B7
+shrimp_catch <- shrimp_data_new$N0 + shrimp_data_new$N1 + shrimp_data_new$N2 + shrimp_data_new$N3 + shrimp_data_new$N4 + shrimp_data_new$N5 + shrimp_data_new$N6 +shrimp_data_new$N7
 
 Data_Geostat = data.frame( "Catch_KG"=shrimp_catch, "Year"=shrimp_data_new[,'Year'], 
                            "Vessel"="missing", "AreaSwept_km2"=0.93*0.03, 
@@ -92,8 +93,11 @@ load("static_covariates.rda")
 load("dynamic_covariates.rda")
 if (covariate==1){
   CovariateList = Calc_Covariates_Knot_Fn(loc_x=loc_x,static_covariates=static_covariates, dynamic_covariates=dynamic_covariates,Data_Extrap=Extrapolation_List[["Data_Extrap"]])
-  X_xj = CovariateList[["X_xj"]]
-  X_xtp = CovariateList[["X_xtp"]]
+  X_xj = as.matrix(CovariateList[["X_xj"]])
+  #X_xj = NULL
+  #X_xtp = NULL
+  X_xtp = array(CovariateList[["X_xtp"]][,,2], c(nrow(loc_x),dim(dynamic_covariates)[2],1))
+  #X_xtp = CovariateList[["X_xtp"]]
 }else{
   X_xj = NULL
   X_xtp = NULL
@@ -169,12 +173,19 @@ PlotIndex_Fn( DirName=DateFile, TmbData=TmbData, Sdreport=Sdreport, Year_Set=Yea
 Q = QQ_Fn( TmbData=TmbData, Report=Report, FileName_PP=paste0(DateFile,"Posterior_Predictive.jpg"), FileName_Phist=paste0(DateFile,"Posterior_Predictive-Histogram.jpg"), FileName_QQ=paste0(DateFile,"Q-Q_plot.jpg"), FileName_Qhist=paste0(DateFile,"Q-Q_hist.jpg"))
 
 # Covariate effect
-PlotCov_Fn(Report=Report, NN_Extrap=NN_Extrap, X_xj=X_xj, FileName=paste0(DateFile,"Cov_"))
+#PlotCov_Fn(Report=Report, NN_Extrap=NN_Extrap, X_xj=X_xj, FileName=paste0(DateFile,"Cov_"))
 
 
 Plot_range_quantiles( Data_Extrap=Extrapolation_List[["Data_Extrap"]], Report=Report, a_xl=a_xl, NN_Extrap=NN_Extrap, 
                       Year_Set=NULL, Prob_vec=c(0.10,0.5,0.90), FileName_Quantiles=paste0(DateFile,"/Range_boundary.png") )
   
 Plot_range_shifts(Sdreport, Report, TmbData, Year_Set=NULL, FileName_COG=paste0(DateFile,"/center_of_gravity.png"), FileName_Area=paste0(DateFile,"/Area.png"), Znames=rep("",ncol(Report$mean_Z_tm)),use_biascorr=FALSE)
+
+
+
+
+
+
+
 
 

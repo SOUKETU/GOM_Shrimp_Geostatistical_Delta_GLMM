@@ -21,7 +21,7 @@ Plot_range_shifts = function( Sdreport, Report, TmbData, Year_Set=NULL, FileName
 
     # Plot center of gravity
     png( file=FileName_COG, width=6.5, height=3, res=200, units="in")
-      par( mfrow=c(1,ncol(mean_Z_tm)), mar=c(3,2,2,0), mgp=c(1.75,0.25,0), tck=-0.02)  # , ...
+      par( mfrow=c(1,ncol(mean_Z_tm)), mar=c(4,3,3,1), mgp=c(1.75,0.25,0), tck=-0.02)  # , ...
       for(m in 1:ncol(mean_Z_tm)){
         WhichRows = 1:TmbData$n_t + TmbData$n_t*(m-1)
         Ybounds = (SD_mean_Z_tm[WhichRows,'Estimate']%o%c(1,1) + SD_mean_Z_tm[WhichRows,'Std. Error']%o%c(-1,1))

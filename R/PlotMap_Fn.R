@@ -31,7 +31,7 @@ function(MappingDetails, Mat, PlotDF, MapSizeRatio, Xlim, Ylim, FileName, Year_S
     for(t in 1:length(Year_Set)){
       if( is.null(MappingDetails) ){
         plot(1, type="n", ylim=Ylim, xlim=Xlim, main="", xlab="", ylab="")#, main=Year_Set[t])
-        points(x=PlotDF[Which,'Lon'], y=PlotDF[Which,'Lat'], col=Col(n=50)[ceiling(f(Mat[Which,],zlim=zlim)[,t]*49)+1], cex=0.01)
+        points(x=PlotDF[Which,'Lon'], y=PlotDF[Which,'Lat'], col=Col(n=50)[ceiling(f(Mat[Which,],zlim=zlim)[,t]*49)+1], cex=0.02,pch=20)
       }else{
         boundary_around_limits = 3
         Map = map(MappingDetails[[1]], MappingDetails[[2]], plot=FALSE, ylim=mean(Ylim)+boundary_around_limits*c(-0.5,0.5)*diff(Ylim), xlim=mean(Xlim)+boundary_around_limits*c(-0.5,0.5)*diff(Xlim), fill=TRUE) # , orientation=c(mean(y.lim),mean(x.lim),15)
@@ -43,7 +43,7 @@ function(MappingDetails, Mat, PlotDF, MapSizeRatio, Xlim, Ylim, FileName, Year_S
         coordinates(tmpUTM) = c("X","Y")
         tmp <- elide( tmpUTM, rotate=Rotate)
         plot(tmp[-c(1:nrow(Tmp1)),], pch="", xlim=range(tmp@coords[-c(1:nrow(Tmp1)),'x']), ylim=range(tmp@coords[-c(1:nrow(Tmp1)),'y']) )
-        points(x=tmp@coords[-c(1:nrow(Tmp1)),'x'], y=tmp@coords[-c(1:nrow(Tmp1)),'y'], col=Col(n=50)[ceiling(f(tmp@data[-c(1:nrow(Tmp1)),-c(1:2),drop=FALSE],zlim=zlim)[,t]*49)+1], cex=Cex, pch=pch)
+        points(x=tmp@coords[-c(1:nrow(Tmp1)),'x'], y=tmp@coords[-c(1:nrow(Tmp1)),'y'], col=Col(n=50)[ceiling(f(tmp@data[-c(1:nrow(Tmp1)),-c(1:2),drop=FALSE],zlim=zlim)[,t]*49)+1], cex=Cex, pch=20)
         lev = levels(as.factor(tmp@data$PID))
         for(levI in 1:(length(lev)-1)) {
           indx = which(tmpUTM$PID == lev[levI])
